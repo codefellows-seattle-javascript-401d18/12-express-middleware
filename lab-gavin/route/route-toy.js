@@ -51,9 +51,8 @@ module.exports = function(router) {
 
   router.delete('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy DELETE');
-    console.log('hello');
     return storage.destroy('toy', req.params._id)
-      .then(toy => res.status(204).text('yadid it' + toy))
+      .then(() => res.status(204).json('yay'))
       .catch(err => createError(404, err.message), next);
 
 

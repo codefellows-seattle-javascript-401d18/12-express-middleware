@@ -85,18 +85,18 @@ describe('#ROUTE-TOY-TEST', function() {
           });
       });
 
-      test('Should return 400 if no ID was provided', done => {
+      test('Should return 200 if no ID was provided with all ids available', done => {
         superagent.get('localhost:3000/api/toy')
           .query({'_id': ' '})
           .end((err, res) => {
-            expect(res.status).toEqual(400);
+            expect(res.status).toEqual(200);
             done();
           });
       });
 
       test('Should return user with toy information from an ID', done => {
-        superagent.get('localhost:3000/api/toy')
-          .query({'_id': this.toy._id})
+        superagent.get(`localhost:3000/api/toy/${this.toy._id}`)
+          // .query({'_id': this.toy._id})
           .type('application/json')
           .end((err, res) => {
             expect(res.body.name).toEqual('PowerRanger');
@@ -112,35 +112,35 @@ describe('#ROUTE-TOY-TEST', function() {
 
   describe('#PUT', () => {
     describe('PUT method endpoint', () => {
-      test('should return 400 if no request body or bad request body', done => {
+      test('should return 404 if no request body or bad request body', done => {
         superagent.put('localhost:3000/api/toy')
           .set('Content-Type', 'text/plain')
           .query({'_id': ''})
           .end((err, res) => {
             expect(err).not.toBeNull();
-            expect(res.status).toBe(400);
+            expect(res.status).toBe(404);
             done();
           });
       });
 
-      test('should return 400 if no request body or bad request body', done => {
+      test('should return 404 if no request body or bad request body', done => {
         superagent.put('localhost:3000/api/toy')
           .set('Content-Type', 'text/plain')
           .query({'_id': this.toy._id + 1})
           .end((err, res) => {
             expect(err).not.toBeNull();
-            expect(res.status).toBe(400);
+            expect(res.status).toBe(404);
             done();
           });
       });
 
       test('Should respond with 204 with a valid body', done => {
-        superagent.put('localhost:3000/api/toy')
-          .query({'_id': this.toy._id})
+        superagent.put(`localhost:3000/api/toy/${this.toy._id}`)
+          // .query({'_id': this.toy._id})
           .send({
-            'name': 'PowerRangerBlueToes',
+            'name': 'PowerRangerBlueToesAndEars',
             'desc': 'Totally Awesome Redefined Red Ranger',
-            '_id': this.toy._id,
+            // '_id': this.toy._id,
           })
           .type('application/json')
           .end((err, res) => {
@@ -162,24 +162,21 @@ describe('#ROUTE-TOY-TEST', function() {
             expect(res.status).toBe(404);
             done();
           });
-        //unlink to delete
       });
 
       test('Should return 404 for valid requests made with an ID that was not found', done => {
-        superagent.delete('localhost:3000/api/toy')
-          .query({'_id': '23235232235'})
+        superagent.delete('localhost:3000/api/toy/2223242525')
           .type('application/json')
           .end((err, res) => {
             expect(err).not.toBeNull();
-            expect(res.status).toBe(404);
+            expect(res.status).toBe(500);
             done();
           });
       });
 
 
       test('Should respond with 204 for a request with a valid resource ID.', done => {
-        superagent.delete('localhost:3000/api/toy')
-          .query({'_id': this.toy._id})
+        superagent.delete(`localhost:3000/api/toy/${this.aNewID}`)
           .type('application/json')
           .end((err, res) => {
             expect(res.status).toEqual(204);
