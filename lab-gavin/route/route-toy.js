@@ -8,7 +8,7 @@ module.exports = function(router) {
     debug('/api/toy POST');
 
     return storage.create(req.body)
-      .then(toy => res.status(201).json(toy))
+      .then(toy => res.status(201).send(toy))
       .catch(err => next(err));
   });
 

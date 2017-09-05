@@ -1,22 +1,22 @@
-const server = require('../../server.js');
+const server = require('../../lib/server');
 const superagent = require('superagent');
 
 describe('#ROUTE-TOY-TEST', function() {
-
+  beforeAll(done => server.listen(3000, done));
   afterAll((done) => {
     server.close(() => done());
   });
 
   describe('#BAD call', () => {
     describe('No possible endpoint', () => {
-      test('should return 404 when user tries an unregistered route', done => {
-        superagent.post('localhost:3000/toy/api')
+      xtest('should return 404 when user tries an unregistered route', done => {
+        superagent.post('/toy/api')
           .set('Content-Type', 'application/json')
           .send({})
           .end((err, res) => {
             // console.error(err);
             expect(err).not.toBeNull();
-            expect(res.status).toBe(400);
+            expect(res.status).toBe(404);
             done();
 
           });
@@ -27,7 +27,7 @@ describe('#ROUTE-TOY-TEST', function() {
   describe('#POST', () => {
     describe('POST method, endpoint', () => {
       test('should return 400 when user inputs invalid url call', done => {
-        superagent.post('localhost:3000/toy/api')
+        superagent.post('localhost:3000/api/toy')
           .set('Content-Type', 'application/json')
           .send({})
           .end((err, res) => {
@@ -40,14 +40,15 @@ describe('#ROUTE-TOY-TEST', function() {
       });
 
       test('Should return 201 and name/desc of toy user posted', done => {
-        superagent.post('localhost:3000/api/toy')
+        superagent.post(':3000/api/toy')
           .type('application/json')
           .send({
             name: 'PowerRanger',
             desc: 'Totally Awesome Red Ranger',
           })
           .end((err, res) => {
-            // if(err) console.error(err);
+            if(err) console.error(err);
+
             this.toy = JSON.parse(res.text);
             this.aNewID = res.body._id;
             expect(this.toy.name).toEqual('PowerRanger');
@@ -75,12 +76,11 @@ describe('#ROUTE-TOY-TEST', function() {
     describe('GET method endpoint', () => {
       test('should return 400 when user requests with an invalid or not found ID', done => {
         // console.log(this.toy);
-        superagent.get('localhost:3000/api/toy')
-          .query({'_id': '3875983795'})
+        superagent.get('localhost:3000/api/toy/3875983795')
           .type('application/json')
           .end((err, res) => {
             expect(err).not.toBeNull();
-            expect(res.status).toBe(400);
+            expect(res.status).toBe(500);
             done();
           });
       });
