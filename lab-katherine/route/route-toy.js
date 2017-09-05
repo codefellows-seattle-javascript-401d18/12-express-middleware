@@ -26,7 +26,6 @@ module.exports = function(router) {
   // .catch(...)
   router.get('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy/:_id GET')
-
     return storage.fetchOne(req.params._id)
       .then(toy => res.json(toy))
       .catch(next)
@@ -34,14 +33,14 @@ module.exports = function(router) {
 
   router.get('/api/toy', (req, res, next) => {
     debug('/api/toy GET')
-    return storage.fetchAll('toy')
+    return storage.fetchAll()
       .then(data => res.json(data))
       .catch(next)
   })
 
   router.put('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy PUT')
-
+    console.log('body', req.body, 'params', req.params._id)
     return storage.update(req.body, req.params._id)
       .then(toy => res.status(204).json(toy))
       .catch(next)

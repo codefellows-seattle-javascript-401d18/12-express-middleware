@@ -11,7 +11,6 @@ const storage = module.exports = {}
 storage.create = function(item) {
   debug('#create')
 
-
   return new Promise((resolve, reject) => {
     // if(!schema) return reject(new Error('cannot create; schema required'))
     if(!item.name) return reject(createError(400, 'cannot create; name required'))
@@ -64,9 +63,8 @@ storage.update = function(item, itemId) {
   debug('#update')
 
   return new Promise((resolve, reject) => {
-    // if(!schema) return reject(new Error('cannot update; schema required'))
     if(!item) return reject(new Error('cannot update; item required'))
-    item._id = itemId
+
     return fs.writeFileProm(`${__dirname}/../data/toy/${itemId}.json`, JSON.stringify(item))
       .then(resolve)
       .catch(reject)
@@ -76,7 +74,6 @@ storage.update = function(item, itemId) {
 storage.destroy = function(itemId) {
   debug('#destroy')
   return new Promise((resolve, reject) => {
-    // if(!schema) return reject(new Error('cannot delete item; schema required'))
     if(!itemId) return reject(new Error('cannot delete item; itemId required'))
 
     return fs.unlinkProm(`${__dirname}/../data/toy/${itemId}.json`)
