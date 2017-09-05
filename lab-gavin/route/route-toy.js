@@ -1,14 +1,15 @@
-'use strict'
+'use strict';
 const storage = require('../lib/storage');
 const debug = require('debug')('http:route-toy');
+const createError = require('http-errors');
 
 module.exports = function(router) {
   router.post('/api/toy', (req, res, next) => {
     debug('/api/toy POST');
 
     return storage.create(req.body)
-    .then(toy => res.status(201).json(toy));
-    .catch(err => next(err));
+      .then(toy => res.status(201).json(toy))
+      .catch(err => next(err));
   });
 
   // This is how express allows dynamic routes via parameters
@@ -24,52 +25,37 @@ module.exports = function(router) {
   // .then(...)
   // .catch(...)
   router.get('/api/toy/:_id', (req, res, next) => {
-    debug('/api/toy/:_id GET')
+    debug('/api/toy/:_id GET');
 
     return storage.fetchOne(req.params._id)
-    .then(toy => res.json(toy))
-    .catch(next)
+      .then(toy => res.json(toy))
+      .catch(next);
 
-    // if(req.url.query._id) {
-    //   return storage.fetchOne('toy', req.url.query._id)
-    //   .then(toy => response(res, 201, toy))
-    //   .catch(err => response(res, 400, err.message))
-    // }
-    // return storage.fetchAll('toy')
-    // .then(ids => response(res, 200, ids))
-    // .catch(err => response(res, 404, err.message))
-  })
+  });
 
   router.get('/api/toy', (req, res, next) => {
-    debug('/api/toy GET')
+    debug('/api/toy GET');
+    return storage.fetchAll('toy')
+      .then(data => res.json(data))
+      .catch(next);
 
-  })
+  });
 
   router.put('/api/toy/:_id', (req, res, next) => {
-    debug('/api/toy PUT')
-    // if(!req.url.query._id) {
-    //   try {
-    //     let newToy = new Toy(req.body.name, req.body.desc)
+    debug('/api/toy PUT');
 
-    //     return storage.create('toy', newToy)
-    //     .then(toy => response(res, 201, toy))
-    //   } catch (e) {
-    //     response(res, 400, 'bad request: could not update toy')
-    //   }
-    //   return
-    // }
-    // return storage.update('toy', req.body)
-    // .then(() => response(res, 204))
-    // .catch(err => response(res, 400, err.message))
-  })
+    return storage.update('toy', req.body, req.params._id)
+      .then(toy => res.status(204).json('yadid it' + toy))
+      .catch(next);
+  });
 
   router.delete('/api/toy/:_id', (req, res, next) => {
-    debug('/api/toy DELETE')
-  //   if(req.url.query._id) {
-  //     return storage.destroy('toy', req.url.query._id)
-  //     .then(() => response(res, 204))
-  //     .catch(err => response(res, 404, err.message))
-  //   }
-  //   response(res, 400, 'bad request; could not delete resource')
-  })
-}
+    debug('/api/toy DELETE');
+    console.log('hello');
+    return storage.destroy('toy', req.params._id)
+      .then(toy => res.status(204).text('yadid it' + toy))
+      .catch(err => createError(404, err.message), next);
+
+
+  });
+};
