@@ -24,3 +24,5 @@ app.use(cors);
 app.use(router);
 // this should always be last to catch any errors within the callback chain
 app.use(errorMiddleware);
+
+app.all('/*', (req, res) => res.sendStatus(404));
