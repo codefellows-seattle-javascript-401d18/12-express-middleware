@@ -7,9 +7,9 @@ module.exports = function(err, req, res, next) {
   if(err.status) {
     debug('user error');
     res.status(err.status).send(err.name);
-    res.writeHead(400, 'Bad request; need more info');
-    res.write('you done did it now');
-    res.end();
+    // res.writeHead(400, 'Bad request; need more info');
+    // res.write('you done did it now');
+    // res.end();
     next();
     return;
   }
