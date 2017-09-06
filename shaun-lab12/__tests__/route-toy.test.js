@@ -1,38 +1,108 @@
-'use strict';
 
-const server = require('~/Codefellows/401-lab/08-vanilla-rest-api/shaun-lab8');
+const server = require('../../lib/server');
 const superagent = require('superagent');
 
-
-let aNewID;
-describe('#ROUTE-TOY-TEST', () => {
-  // beforeAll((done) => {
-  //   server.listen(3000, () => done());
-  // });
+describe('#ROUTE-TOY-TEST', function() {
+  beforeAll(done => server.listen(3000, done));
   afterAll((done) => {
     server.close(() => done());
   });
+
+  describe('#BAD call', () => {
+    describe('No possible endpoint', () => {
+      test('should return 404 when user tries an unregistered route', done => {
+        superagent.post('/toy/api')
+          .set('Content-Type', 'application/json')
+          .send({})
+          .end((err, res) => {
+            // console.error(err);
+            expect(err).not.toBeNull();
+            expect(res.status).toBe(404);
+            done();
+
+          });
+      });
+    });
+  });
+
   describe('#POST', () => {
     describe('POST method, endpoint', () => {
       test('should return 400 when user inputs invalid url call', done => {
-        superagent.post('localhost:3000/toy/api')
-          .set('Content-Type', 'text/plain')
+        superagent.post('localhost:3000/api/toy')
+          .set('Content-Type', 'application/json')
+          .send({})
           .end((err, res) => {
+            // console.error(err);
             expect(err).not.toBeNull();
             expect(res.status).toBe(400);
+            done();
+
+          });
+      });
+
+      test('Should return 201 and name/desc of toy user posted', done => {
+        superagent.post(':3000/api/toy')
+          .type('application/json')
+          .send({
+            name: 'GIJoe',
+            desc: 'Duke',
+          })
+          .end((err, res) => {
+            if(err) console.error(err);
+
+            this.toy = JSON.parse(res.text);
+            this.aNewID = res.body._id;
+            expect(this.toy.name).toEqual('GIJoe');
+            expect(this.toy.desc).toEqual('Duke');
+            expect(res.status).toEqual(201);
+            done();
+          });
+      });
+      test('Should return 400 when not provding both name/desc', done => {
+        superagent.post('localhost:3000/api/toy')
+          .type('application/json')
+          .send({
+            desc: 'Stormshadow',
+          })
+          .end((err, res) => {
+            expect(res.status).toEqual(400);
+            done();
+          });
+      });
+    });
+  });
+
+  // console.log(this.toy);
+  describe('#GET', () => {
+    describe('GET method endpoint', () => {
+      test('should return 400 when user requests with an invalid or not found ID', done => {
+        // console.log(this.toy);
+        superagent.get('localhost:3000/api/toy/3875983795')
+          .type('application/json')
+          .end((err, res) => {
+            expect(err).not.toBeNull();
+            expect(res.status).toBe(500);
             done();
           });
       });
 
-      test('Should return name and desc of toy user posted', done => {
-        superagent.post('localhost:3000/api/toy')
-          .send({'name': 'Ninja Tutles', 'desc': 'The purple one'})
+      test('Should return 200 if no ID was provided with all ids available', done => {
+        superagent.get('localhost:3000/api/toy')
+          .query({'_id': ' '})
+          .end((err, res) => {
+            expect(res.status).toEqual(200);
+            done();
+          });
+      });
+
+      test('Should return user with toy information from an ID', done => {
+        superagent.get(`localhost:3000/api/toy/${this.toy._id}`)
+          // .query({'_id': this.toy._id})
           .type('application/json')
           .end((err, res) => {
-            aNewID = this.response;
-            expect(res.body.name).toEqual('Ninja Tutles');
-            expect(res.body.desc).toEqual('The purple one');
-            expect(res.status).toEqual(201);
+            expect(res.body.name).toEqual('GIJoe');
+            expect(res.body.desc).toEqual('Duke');
+            expect(res.status).toEqual(200);
             done();
           });
       });
@@ -40,39 +110,42 @@ describe('#ROUTE-TOY-TEST', () => {
   });
 
 
-  describe('#GET', () => {
-    describe('GET method endpoint', () => {
-      test('should return 404 when user requests with an invalid or not found ID', done => {
-        superagent.get('localhost:3000/api/toy')
-          .send({'_id': '3875983795'})
-          .type('application/json')
+
+  describe('#PUT', () => {
+    describe('PUT method endpoint', () => {
+      test('should return 404 if no request body or bad request body', done => {
+        superagent.put('localhost:3000/api/toy')
+          .set('Content-Type', 'text/plain')
+          .query({'_id': ''})
           .end((err, res) => {
             expect(err).not.toBeNull();
-            expect(res.status).toBe(400);
+            expect(res.status).toBe(404);
             done();
           });
       });
 
-      test('Should return 400 if no ID was provided', done => {
-        superagent.get('localhost:3000/api/toy')
-          .send({})
-          .type('application/json')
+      test('should return 404 if no request body or bad request body', done => {
+        superagent.put('localhost:3000/api/toy')
+          .set('Content-Type', 'text/plain')
+          .query({'_id': this.toy._id + 1})
           .end((err, res) => {
-            expect(res.body.name).toEqual(undefined);
-            expect(res.status).toEqual(400);
+            expect(err).not.toBeNull();
+            expect(res.status).toBe(404);
             done();
           });
       });
 
-      test('Should return user with toy information from an ID', done => {
-        console.log(aNewID._id);
-        superagent.get('localhost:3000/api/toy')
-          .send({'_id': `${aNewID._id}`})
+      test('Should respond with 204 with a valid body', done => {
+        superagent.put(`localhost:3000/api/toy/${this.toy._id}`)
+          // .query({'_id': this.toy._id})
+          .send({
+            'name': 'GIJoeBlueToesAndEars',
+            'desc': 'COBBBRRRAAAAA',
+            // '_id': this.toy._id,
+          })
           .type('application/json')
           .end((err, res) => {
-            expect(res.body).toEqual('Ninja Turtles');
-            expect(res.body).toEqual('That puprple one?');
-            expect(res.status).toEqual(200);
+            expect(res.status).toEqual(204);
             done();
           });
       });
@@ -81,9 +154,9 @@ describe('#ROUTE-TOY-TEST', () => {
 
   describe('#DELETE', () => {
     describe('DELETE method endpoint', () => {
-      test('should return 400 if no resource ID was provided', done => {
+      test('should return 404 if no resource ID was provided', done => {
         superagent.delete('localhost:3000/api/toy')
-          .set('Content-Type', 'text/plain')
+          .set('Content-Type', 'application/json')
           .end((err, res) => {
             expect(err).not.toBeNull();
             expect(res.status).toBe(404);
@@ -91,49 +164,22 @@ describe('#ROUTE-TOY-TEST', () => {
           });
       });
 
-      test('Should return 404 for valid requests made with an ID that was not found', done => {
-        superagent.delete('localhost:3000/api/toy')
-          .send({'_id': '23235232235'})
+      test('Should return 500 for valid requests made with an ID that was not found', done => {
+        superagent.delete('localhost:3000/api/toy/2223242525')
           .type('application/json')
           .end((err, res) => {
             expect(err).not.toBeNull();
-            expect(res.status).toBe(404);
+            expect(res.status).toBe(500);
             done();
           });
       });
 
 
-      test('Should respond with 204 no body content for a request with a valid resource ID.', done => {
-        superagent.delete('localhost:3000/api/toy')
-          .send({'_id': `${aNewID._id}`})
+      test('Should respond with 204 for a request with a valid resource ID.', done => {
+        superagent.delete(`localhost:3000/api/toy/${this.aNewID}`)
           .type('application/json')
           .end((err, res) => {
-            // expect(res.text).toEqual({ text: JSON.stringify('Hi, Im Cow') });
             expect(res.status).toEqual(204);
-            done();
-          });
-      });
-    });
-  });
-
-  describe('#PUT', () => {
-    describe('POST method, /cowsay endpoint', () => {
-      test('should return 400 if no request body or bad request body', done => {
-        superagent.put('localhost:3000/api/toy')
-          .set('Content-Type', 'text/plain')
-          .end((err, res) => {
-            expect(err).not.toBeNull();
-            expect(res.status).toBe(400);
-            done();
-          });
-      });
-
-      test('Should respond with no body content for a put request with a valid body', done => {
-        superagent.put('localhost:3000/api/toy')
-          .send({'_id': `${aNewID._id}`, 'name': 'Steven', 'desc':'Alpaca'})
-          .type('application/json')
-          .end((err, res) => {
-            expect(res.status).toEqual(400);
             done();
           });
       });
