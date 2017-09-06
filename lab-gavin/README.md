@@ -1,11 +1,11 @@
-# *VanillaJS*
-# Servering the best Vanilla JavaScript around.
+# *SeveringUpSomeExpresso*
+# Servering the best Express Experience around.
 
-# Server request and response demonstration.
+# Server request and response demonstration using Express.
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
 ## Project Description
-Using node.js, HTTP, superagent, cowsay, and querystring I have created a Server that responds to different GET and POST responses from users. This project represents what is possible with a few simple tools. We can create persistence memory through the filesystem feature of node.js which can then be used to simulate a database api for a user or dev.
+Using node.js, HTTP, superagent, and Express I have created a Server that responds to different GET, POST, PUT, and DELETE responses from users. This project represents what is possible with a few simple tools. We can create persistence memory through the filesystem feature of node.js which can then be used to simulate a database api for a user or dev.
 
 ## Table of Contents
 + [Installation](#installation)
@@ -31,6 +31,7 @@ Using node.js, HTTP, superagent, cowsay, and querystring I have created a Server
 
   + This installs httpie which is a package that allows you to make calls to our local server.
 
+
 + Here are a list of commands you may use to make API calls to this vanilla server.
 
   ## These are the only variations of this API and endpoints.
@@ -42,20 +43,20 @@ Using node.js, HTTP, superagent, cowsay, and querystring I have created a Server
 
   `http GET localhost:3000/api/toy/`
   ### GET requests
-  + Example.==>`http GET localhost:3000/api/toy?_id=''`
-  + Example w/ Mock ID ==> `http GET localhost:3000/api/toy?_id='ee30e86a-36ee-4843-b47e-a252531bac41'`
+  + Example.==>`http GET localhost:3000/api/toy/idNumber`
+  + Example w/ Mock ID ==> `http GET localhost:3000/api/toy/ee30e86a-36ee-4843-b47e-a252531bac41`
 
   ### POST requests
   + Example ==>`http POST localhost:3000/api/toy name=name desc=desc`
   + Example w/ Mock ID ==> `http POST localhost:3000/api/toy name=PowerRanger desc='Super Awesome Red Ranger'`
 
   ### PUT requests
-  + Example ==>`http PUT localhost:3000/api/toy?_id='someid name=new name desc=new desc'`
-  + Example w/ Mock ID ==> `http PUT localhost:3000/api/toy?_id='96d6514b-b1da-4a11-a8a7-b044436a23ab' name=PowerRangerGreen desc=Totally awesome Green Ranger`
+  + Example ==>`http PUT localhost:3000/api/toy/someid name=new name desc=new desc'`
+  + Example w/ Mock ID ==> `http PUT localhost:3000/api/toy/96d6514b-b1da-4a11-a8a7-b044436a23ab name=PowerRangerGreen desc=Totally awesome Green Ranger`
 
   ### DELETE requests
-  + Example`http DELETE localhost:3000/api/toy?_id='some Id'` will return 404.
-  + Example w/ Mock ID ==> `http DELETE localhost:3000/api/toy?_id='ee30e86a-36ee-4843-b47e-a252531bac41'`.
+  + Example`http DELETE localhost:3000/api/toy/some Id` will return 404.
+  + Example w/ Mock ID ==> `http DELETE localhost:3000/api/toy/ee30e86a-36ee-4843-b47e-a252531bac41`.
 
 ### Usage
 This app is completely free to be used however you'd like!
