@@ -34,19 +34,24 @@ module.exports = function(router) {
 
   router.delete('/api/toy', (req, res) => {
     debug('api/toy DELETE');
-    if(req.url.query._id) {
-      response.sendText(res, 404, 'bad request; unable to delete');
-      return;
-    }
-    storage.delete('toy', req.url.query._id)
-      .then(toy => {
-        response.sendText(res, 204, `deleted toy id#; ${toy}`);
-      })
-      .catch(e => {
-        console.error(e);
-        response.sendText(res, 404, `bad request; unable to locate record`);
-      });
-    return;
+
+    return storage.destroy(req.params._id)
+    .then(() => res.sendStatus(204))
+    .catch(next);
+
+    // if(req.url.query._id) {
+    //   response.sendText(res, 404, 'bad request; unable to delete');
+    //   return;
+    // }
+    // storage.delete('toy', req.url.query._id)
+    //   .then(toy => {
+    //     response.sendText(res, 204, `deleted toy id#; ${toy}`);
+    //   })
+    //   .catch(e => {
+    //     console.error(e);
+    //     response.sendText(res, 404, `bad request; unable to locate record`);
+    //   });
+    // return;
   });
 
   router.put('/api/toy'), (req, res) => {

@@ -3,10 +3,10 @@
 const debug = require('debug')('http:server');
 
 // setting up express
-const PORT = process.env.PORT || 3000;
 const express = require('express');
 const router = express.Router();
-const app = module.exports = express();
+const app = express();
+debug('shut up debug');
 
 // setting up middleware
 const bodyParser = require('body-parser').json();
@@ -23,3 +23,7 @@ app.use(router);
 
 // always last to catch errors
 app.use(errorMiddleWare);
+
+app.all('/*', (req, res) => res.sendStatus(404));
+
+module.exports = app;

@@ -39,19 +39,17 @@ storage.fetchOne = function(itemId) {
   });
 };
 
-storage.fetchAll = function(schema) {
+storage.fetchAll = function() {
   debug('#fetchAll');
 
   return new Promise((resolve, reject) => {
-    if(!schema) return reject(new Error('cannot get items; schema required'));
-    return fs.readdirProm(`${__dirname}/../data/${schema}`)
-      .then(ids => {
-        let data = Array.prototype.amp.call(ids, (id => id.split('.', 1).toString));
+    return fs.readdirProm(`${__dirname}/../data/toy`)
+      .then(filePaths => {
+        let data = Array.prototype.map.call(filePaths, (id => id.split('.', 1).toString));
         return resolve(data);
       })
       .catch(reject);
   });
-
 };
 
 storage.update = function(schema, item) {
