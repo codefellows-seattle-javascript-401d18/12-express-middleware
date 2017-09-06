@@ -10,7 +10,7 @@ const app = module.exports = express();
 
 // setting up middleware
 const bodyParser = require('body-parser').json();
-const cors = require('./cors');
+const cors = require('./cors-middleware');
 const errorMiddleWare = require('./error-middleware');
 
 // routes
