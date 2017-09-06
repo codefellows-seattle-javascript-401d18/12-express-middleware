@@ -9,7 +9,7 @@ module.exports = function(router) {
 
     return storage.create(req.body)
       .then(toy => res.status(201).json(toy))
-      .catch(err => next(err))
+      .catch(next)
   })
 
   // This is how express allows dynamic routes via parameters
