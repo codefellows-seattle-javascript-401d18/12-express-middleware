@@ -28,11 +28,9 @@ storage.create = function(item) {
 
 };
 
-storage.fetchOne = function(schema, itemId) {
+storage.fetchOne = function(itemId) {
   debug('#fetchOne');
   return new Promise((resolve, reject) => {
-
-    // if(!schema) return reject(new Error('cannot get item; schema required'));
     if(!itemId) return reject(createError(400, 'cannot get item; itemId required'));
 
     return fs.readFileProm(`${__dirname}/../data/toy/${itemId}.json`)
@@ -48,9 +46,20 @@ storage.fetchOne = function(schema, itemId) {
   });
 };
 
-storage.fetchAll = function(schema, item) {
-  debug('#update');
-
+storage.fetchAll = function() {
+  debug('#fetchAll');
+  return new Promise((resolve, reject) => {
+    fs.readdirProm(`${__dirname}/../data/toy/`)
+      .then(files => {
+        let data = [];
+        files.forEach(id => {
+          let _id = id.split('.')[0];
+          data.push(_id);
+        });
+        return resolve(data);
+      })
+      .catch(reject);
+  });
 };
 
 storage.update = function(schema, item) {
