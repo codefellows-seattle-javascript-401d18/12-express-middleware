@@ -10,28 +10,22 @@ const storage = module.exports = {};
 
 storage.create = function(item) {
   debug('#create');
-
-
   return new Promise((resolve, reject) => {
-    // if(!schema) return reject(new Error('cannot create; schema required'))
-    if(!item.name) return reject(createError(400, 'cannot create; name required'));
-    if(!item.desc) return reject(createError(400, 'cannot create; desc required'));
+    if(!item.name || typeof item.name !== 'string') return reject(createError(400, 'cannot create; name required'));
+    if(!item.desc || typeof item.desc !== 'string') return reject(createError(400, 'cannot create; desc required'));
 
     let toy = new Toy(item.name, item.desc);
 
     return fs.writeFileProm(`${__dirname}/../data/toy/${toy._id}.json`, JSON.stringify(toy))
-      .then(() => resolve(toy));
-    // .catch(reject);
+      .then(() => resolve(toy))
+      .catch(reject);
   });
 };
 
 storage.fetchOne = function(itemId) {
   debug('#fetchOne');
-
   return new Promise((resolve, reject) => {
-    // if(!schema) return reject(new Error('cannot get item; schema required'))
     if(!itemId) return reject(createError(400, 'cannot get item; itemId required'));
-
     return fs.readFileProm(`${__dirname}/../data/toy/${itemId}.json`)
       .then(buff => {
         try {

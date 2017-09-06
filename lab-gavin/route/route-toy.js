@@ -12,18 +12,6 @@ module.exports = function(router) {
       .catch(err => next(err));
   });
 
-  // This is how express allows dynamic routes via parameters
-  // http GET :3000/api/toy/1234-5678
-  // req.params._id => 1234-5678
-
-  // This is how our vanilla http servers were structured
-  // http GET :3000/api/toy?_id=1234-5678
-  // req.query._id => 1234-5678
-
-  // superagent request:
-  // superagent.get(':3000/api/toy/1234-5678')
-  // .then(...)
-  // .catch(...)
   router.get('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy/:_id GET');
     if (!req.params._id){
