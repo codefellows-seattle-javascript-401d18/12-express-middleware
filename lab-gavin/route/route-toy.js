@@ -26,7 +26,9 @@ module.exports = function(router) {
   // .catch(...)
   router.get('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy/:_id GET');
-
+    if (!req.params._id){
+      err.status;
+    }
     return storage.fetchOne(req.params._id)
       .then(toy => res.json(toy))
       .catch(next);
@@ -53,7 +55,7 @@ module.exports = function(router) {
     debug('/api/toy DELETE');
     return storage.destroy('toy', req.params._id)
       .then(() => res.status(204).json('yay'))
-      .catch(err => createError(404, err.message), next);
+      .catch(err => createError(err.status, err.message), next);
 
 
   });

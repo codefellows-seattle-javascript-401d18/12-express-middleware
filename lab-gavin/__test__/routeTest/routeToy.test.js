@@ -155,7 +155,6 @@ describe('#ROUTE-TOY-TEST', function() {
     describe('DELETE method endpoint', () => {
       test('should return 404 if no resource ID was provided', done => {
         superagent.delete('localhost:3000/api/toy')
-          .query({})
           .set('Content-Type', 'application/json')
           .end((err, res) => {
             expect(err).not.toBeNull();
@@ -164,7 +163,7 @@ describe('#ROUTE-TOY-TEST', function() {
           });
       });
 
-      test('Should return 404 for valid requests made with an ID that was not found', done => {
+      test('Should return 500 for valid requests made with an ID that was not found', done => {
         superagent.delete('localhost:3000/api/toy/2223242525')
           .type('application/json')
           .end((err, res) => {
