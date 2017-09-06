@@ -62,3 +62,22 @@ storage.fetchAll = function(schema) {
       .catch(reject);
   });
 };
+
+storage.update = function(itemId, item) {
+  debug('#update');
+  return new Promise((resolve, reject) => {
+    if(!itemId) return reject(createError(400, 'cannot update; itemId required'));
+    if(!item) return reject(createError(400, 'cannot update; item required'));
+  });
+};
+
+storage.destroy = function(itemId) {
+  debug('#destroy');
+  return new Promise((resolve, reject) => {
+    if(!itemId) return reject(createError(400, 'cannot delete the item; itemId required'));
+
+    return fs.unlinkProm(`${__dirname}/../data/toy/${itemId}.json`)
+      .then(resolve)
+      .catch(reject);
+  });
+};

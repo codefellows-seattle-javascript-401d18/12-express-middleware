@@ -29,12 +29,12 @@ module.exports = function(router) {
 
   router.put('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy PUT');
-
-
   });
 
   router.delete('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy DELETE');
-
+    return storage.destroy(res.params._id)
+      .then(() => res.sendStatus(204))
+      .catch(next);
   });
 };

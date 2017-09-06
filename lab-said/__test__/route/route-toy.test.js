@@ -49,7 +49,6 @@ describe('Testing toy routes', function() {
           done();
         });
       });
-
     });
     describe('GET requests', () => {
       test('should get the record from the toy dir', done => {
@@ -97,8 +96,7 @@ describe('Testing toy routes', function() {
     describe('DELETE requests', () => {
       describe('Valid Requests', () => {
         beforeAll(done => {
-          superagent.delete(':3000/api/toy')
-            .query({_id: this.mockToy._id})
+          superagent.delete(`:3000/api/toy/${this.mockToy._id}`)
             .then(res => {
               this.resDelete = res;
               done();
