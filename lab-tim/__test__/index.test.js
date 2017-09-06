@@ -1,6 +1,6 @@
 'use strict';
 
-const server = require('../server.js');
+const index = require('../index.js');
 const superagent = require('superagent');
 
 // superagent request:
@@ -8,9 +8,9 @@ const superagent = require('superagent');
 // .then(...)
 // .catch(...)
 
-describe('Testing the server file', function () {
+describe('Testing the index file', function () {
   afterAll((done) => {
-    server.close(done);
+    index.close(done);
   });
 
   describe('POST  method', () => {
@@ -40,16 +40,13 @@ describe('Testing the server file', function () {
   });
 
   describe('PUT method', () => {
-    test.only('PUT on /api/toy endpoint - should return status code 204 and response', done => {
-      superagent.put('localhost:3000/')
-        .send({_id: 'some-id-string', name: 'slinky', desc: 'metal'})
+    test('PUT on /api/toy endpoint - should return status code 204 and response', done => {
+      superagent.put('localhost:3000/api/toy')
+        .send({_id: '2efd43c5-cc5c-4671-8539-a09bb8780580', name: 'slinky', desc: 'metal'})
         .set('Content-Type', 'application/json')
         .end((err, res) => {
           expect(err).toBeNull();
           expect(res.status).toBe(204);
-          expect(res.body._id).not.toBeNull();
-          expect(res.body.name).toEqual('slinky');
-          expect(res.body.desc).toEqual('metal');
           done();
         });
     });
@@ -68,7 +65,7 @@ describe('Testing the server file', function () {
 
   describe('GET method', () => {
     test('GET on /api/toy endpoint - should return status code 200 and response', done => {
-      superagent.get('localhost:3000/api/toy?_id=some-id-string')
+      superagent.get('localhost:3000/api/toy/2efd43c5-cc5c-4671-8539-a09bb8780580')
         .set('Content-Type', 'application/json')
         .end((err, res) => {
           expect(err).toBeNull();
@@ -80,7 +77,7 @@ describe('Testing the server file', function () {
     });
 
     test('GET on /api/toy endpoint - should return status code 404', done => {
-      superagent.get('localhost:3000/api/toy?_id=some-other-id-string')
+      superagent.get('localhost:3000/api/toy/some-invalid-id-string')
         .set('Content-Type', 'application/json')
         .end((err, res) => {
           expect(err).not.toBeNull();
@@ -90,11 +87,11 @@ describe('Testing the server file', function () {
     });
 
     test('GET on /api/toy endpoint - should return status code 400', done => {
-      superagent.get('localhost:3000/api/toy?name=some-id-string')
+      superagent.get('localhost:3000/api/toy/some-invalid-id-string-id-string')
         .set('Content-Type', 'application/json')
         .end((err, res) => {
           expect(err).not.toBeNull();
-          expect(res.status).toBe(400);
+          expect(res.status).toBe(404);
           done();
         });
     });
@@ -102,7 +99,7 @@ describe('Testing the server file', function () {
 
   describe('DELETE method', () => {
     test('DELETE on /api/toy endpoint - should return status code 204', done => {
-      superagent.delete('localhost:3000/api/toy?_id=some-id-string')
+      superagent.delete('localhost:3000/api/toy/some-id-string')
         .set('Content-Type', 'application/json')
         .end((err, res) => {
           expect(err).toBeNull();
@@ -116,7 +113,7 @@ describe('Testing the server file', function () {
         .set('Content-Type', 'application/json')
         .end((err, res) => {
           expect(err).not.toBeNull();
-          expect(res.status).toBe(400);
+          expect(res.status).toBe(404);
           done();
         });
     });

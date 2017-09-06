@@ -54,7 +54,7 @@ storage.update = function(item) {
   debug('#update');
 
   return new Promise((resolve, reject) => {
-    if(!item) return reject(createError(400, 'cannot update; new name or desc required'));
+    if(!item._id) return reject(createError(400, 'cannot update; item ID required'));
 
     return fs.writeFileProm(`${__dirname}/../data/toy/${item._id}.json`, JSON.stringify(item))
       .then(() => resolve(item))
