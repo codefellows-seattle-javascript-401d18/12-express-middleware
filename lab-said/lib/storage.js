@@ -44,3 +44,21 @@ storage.fetchOne = function(itemId) {
       .catch(reject);
   });
 };
+
+storage.fetchAll = function(schema) {
+  debug('#fetchAll');
+  return new Promise((resolve, reject) => {
+    if(!schema) return reject(createError(400, 'cannot get items; schema required'));
+
+    return fs.readFileProm(`${__dirname}/../data/toy/${schema}`)
+      .then(ids => {
+        try {
+          let data = Array.prototype.map.call(ids, (id => id.split('.', 1).toString()));
+          return resolve(data);
+        } catch(e) {
+          return reject(e);
+        }
+      })
+      .catch(reject);
+  });
+};

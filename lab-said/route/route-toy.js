@@ -22,7 +22,9 @@ module.exports = function(router) {
   router.get('/api/toy', (req, res, next) => {
     debug('/api/toy GET');
 
-
+    return storage.fetchAll(req.body)
+      .then(data => res.json(data))
+      .catch(next);
   });
 
   router.put('/api/toy/:_id', (req, res, next) => {
