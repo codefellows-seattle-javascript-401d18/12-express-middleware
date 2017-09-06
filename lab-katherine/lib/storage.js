@@ -20,7 +20,7 @@ storage.create = function(item) {
 
     return fs.writeFileProm(`${__dirname}/../data/toy/${toy._id}.json`, JSON.stringify(toy))
       .then(() => resolve(toy))
-      .catch(reject)
+      .catch(err => reject(err))
   })
 }
 
