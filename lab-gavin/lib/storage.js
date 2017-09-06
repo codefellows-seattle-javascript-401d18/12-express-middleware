@@ -44,7 +44,7 @@ storage.fetchAll = function(schema) {
 
 
   return new Promise((resolve, reject) => {
-    if(!schema) return reject(new Error('cannot get items; schema required'));
+    if(!schema) return reject(createError('cannot get items; schema required'));
 
     return fs.readdirProm(`${__dirname}/../data/${schema}`)
       .then(ids => {
@@ -59,8 +59,8 @@ storage.update = function(schema, item, itemId) {
   debug('#update');
 
   return new Promise((resolve, reject) => {
-    if(!schema) return reject(new Error('cannot update; schema required'));
-    if(!item) return reject(new Error('cannot update; item required'));
+    if(!schema) return reject(createError(400, 'cannot update; schema required'));
+    if(!item) return reject(createError(400, 'cannot update; item required'));
     item._id = itemId;
     return fs.writeFileProm(`${__dirname}/../data/${schema}/${itemId}.json`, JSON.stringify(item))
       .then(resolve)
@@ -72,8 +72,8 @@ storage.destroy = function(schema, itemId) {
   debug('#destroy');
 
   return new Promise((resolve, reject) => {
-    if(!schema) return reject(new Error('cannot delete item; schema required'));
-    if(!itemId) return reject(new Error('cannot delete item; itemId required'));
+    if(!schema) return reject(createError(400, 'cannot delete item; schema required'));
+    if(!itemId) return reject(createError(400, 'cannot delete item; itemId required'));
 
     return fs.unlinkProm(`${__dirname}/../data/${schema}/${itemId}.json`)
       .then(resolve)
