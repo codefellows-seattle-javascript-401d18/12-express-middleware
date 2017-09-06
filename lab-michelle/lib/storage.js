@@ -7,6 +7,7 @@ const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 const Toy = require('../model/toy')
 
+//why is it complaining about storage - we're IN storage?
 storage.create = function(item) {
   debug('#create');
 
