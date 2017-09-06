@@ -51,8 +51,3 @@ module.exports = function(router) {
 // This is how our vanilla http servers were structured
 // http GET :3000/api/toy?_id=1234-5678
 // req.query._id => 1234-5678
-
-// superagent request:
-// superagent.get(':3000/api/toy/1234-5678')
-// .then(...)
-// .catch(...)
