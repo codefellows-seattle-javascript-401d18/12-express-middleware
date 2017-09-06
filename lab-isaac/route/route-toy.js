@@ -11,15 +11,6 @@ module.exports = function(router) {
       .then(toy => res.status(201).json(toy))
       .catch(err => next(err));
   });
-  //   try {
-  //     let newToy = new Toy(req.body.name, req.body.desc);
-  //     // if successful, store this thing in memory using the storage module
-  //     storage.create('toy', newToy)
-  //       .then(toy => response.sendJson(res, 201, toy));
-  //   } catch(e) {
-  //     console.error(e);
-  //     response.sendText(res, 400, `bad request: \n${e.message}`);
-  //   }
 
   router.get('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy/:_id GET');
@@ -28,19 +19,12 @@ module.exports = function(router) {
       .then(toy => res.json(toy))
       .catch(next);
   });
-  //   if(req.url.query._id) {
-  //     storage.fetchOne('toy', req.url.query._id)
-  //       .then(toy => response.sendJson(res, 200, JSON.stringify(toy)))
-  //       .catch(err => {
-  //         console.error(err);
-  //         response.sendText(res, 404, 'bad request; could not find record');;
-  //       });
-  //     return;
-  //   }
-  //   response.sendText(res, 400, 'bad request; item id required to get record');
 
   router.get('/api/toy', (req, res, next) => {
-    debug('/api/toy GET');
+    debug('/api/toy GET all');
+    return storage.fetchAll()
+      .then(toys => res.json(toys))
+      .catch(next);
 
   });
 
