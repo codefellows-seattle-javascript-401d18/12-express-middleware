@@ -3,7 +3,7 @@
 const debug = require('debug')('http:server');
 
 // express setup
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 const express = require('express');
 const router = express.Router();
 const app = module.exports = express();
