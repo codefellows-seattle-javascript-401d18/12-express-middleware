@@ -28,23 +28,18 @@ module.exports = function(router) {
 
   });
 
-  router.put('/api/toy', (req, res, next) => {
+  router.put('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy PUT');
 
+    return storage.update(req.params._id, req.body)
+      .then(() => res.sendStatus(204))
+      .catch(next);
   });
-  //   if(req.url.query._id) {
-  //     if(!req.body.id && !req.body.name && !req.body.desc) {
-  //       return response.sendText(res, 400, 'bad request; body improperly formatted');
-  //     }
-  //     storage.update('toy', req.body)
-  //       .then(() => response.sendText(res, 204, null))
-  //       .catch(err => response.sendText(res, 400, `bad request; ${err.message}`));
-  //     return;
-  //   }
-  //   response.sendText(res, 400, 'bad requst; item id required to get record');
 
-  router.delete('/api/toy', (req, res, next) => {
+  router.delete('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy DELETE');
-
+    return storage.destroy(req.params._id)
+      .then(() => res.sendStatus(204))
+      .catch(next);
   });
 };

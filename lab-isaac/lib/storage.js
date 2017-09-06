@@ -6,10 +6,6 @@ const Toy = require('../model/toy');
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
 
-// fs.readFileProm(`${__dirname}/../data/${schema}/${item_id}.json)
-// .then(...)
-// .catch(...)
-
 const storage = module.exports = {};
 
 storage.create = function(item) {
@@ -53,7 +49,7 @@ storage.fetchAll = function() {
       .then(files => {
         let data = [];
         files.forEach(id => {
-          let _id = id.split('.')[0];
+          let _id = id.split('.')[0].toString();
           data.push(_id);
         });
         return resolve(data);
@@ -62,15 +58,28 @@ storage.fetchAll = function() {
   });
 };
 
-storage.update = function(schema, item) {
+storage.update = function(itemId, item) {
   debug('#update');
 
-  // return new Promise((resolve, reject) => {
-  //   if(!schema) return reject(new Error('cannot update item; schema required'));
-  //   if(!item) return reject(new Error('cannot update item; item required'));
-  // });
+  return new Promise((resolve, reject) => {
+    if(!itemId) return reject(createError(400, 'cannot update; itemId required'));
+    if(!item) return reject(createError(400, 'cannot update; item required'));
+    if(item._id !== itemId) return reject(createError(400, 'cannot update; item ids do not match'));
+
+    return fs.writeFileProm(`${__dirname}/../data/toy/${itemId}.json`, JSON.stringify(item))
+      .then(resolve)
+      .catch(reject);
+  });
 };
 
-storage.destroy = function(schema, item) {
+storage.destroy = function(itemId) {
   debug('#destroy');
+  return new Promise((resolve, reject) => {
+    // if(!schema) return reject(new Error('cannot delete item; schema required'));
+    if(!itemId) return reject(new Error('cannot delete item; itemId required'));
+
+    return fs.unlinkProm(`${__dirname}/../data/toy/${itemId}.json`)
+      .then(resolve)
+      .catch(reject);
+  });
 };
