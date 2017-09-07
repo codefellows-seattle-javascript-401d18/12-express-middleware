@@ -3,6 +3,7 @@
 
 db/
 build/
+data/
 
 ### macOS ###
 *.DS_Store
@@ -93,6 +94,7 @@ typings/
 
 # Dependency directories
 db
+data
 node_modules
 jspm_package
 
