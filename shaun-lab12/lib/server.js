@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('http:server');
+//const debug = require('debug')('http:server');
 
 // express setup
 const express = require('express');

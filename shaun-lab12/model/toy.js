@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('http:model-toy');
+// const debug = require('debug')('http:model-toy');
 const mongoose = require('mongoose');
 
 const Toy = mongoose.Schema({
@@ -8,4 +8,4 @@ const Toy = mongoose.Schema({
   desc: {type: String, required: true},
 }, {timestamps: true});
 
-module.exports = mongoose.model('goose', Toy);
+module.exports = mongoose.model('toy', Toy);
