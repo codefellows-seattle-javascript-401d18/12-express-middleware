@@ -17,4 +17,4 @@ module.exports = function(err, req, res, next) {
   res.status(err.status).send(err.name);
   next();
   //implicit return
-}
+};
