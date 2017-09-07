@@ -1,9 +1,9 @@
 # Created by https://www.gitignore.io/api/osx,vim,node,macos,windows
 
 
-db/
+db
 build/
-data/
+data
 
 ### macOS ###
 *.DS_Store
