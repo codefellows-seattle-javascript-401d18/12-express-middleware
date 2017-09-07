@@ -88,7 +88,7 @@ typings/
 .env
 
 # Dependency directories
-data
+db
 node_modules
 jspm_package
 
