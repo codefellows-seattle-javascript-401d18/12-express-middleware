@@ -14,14 +14,14 @@ storage.create = function(item) {
 
   return new Promise((resolve, reject) => {
 
-    if(!item.name) return reject(createError(400, 'cannot create; name required'));
+    if(!item.name) return reject(createError(400, 'cannot create; valid name required'));
     if(!item.desc) return reject(createError(400, 'cannot create; desc required'));
 
     let toy = new Toy(item.name, item.desc, item.color, item.manif);
 
     return fs.writeFileProm(`${__dirname}/../data/toy/${toy._id}.json`, JSON.stringify(toy))
       .then(() => resolve(toy))
-      .catch(reject);
+      .catch(err => reject(err));
   });
 };
 
@@ -45,19 +45,14 @@ storage.fetchOne = function(itemId) {
   });
 };
 
-storage.fetchAll = function(schema) {
+storage.fetchAll = function() {
   debug('#fetchAll');
-  return new Promise((resolve, reject) => {
-    if(!schema) return reject(createError(400, 'cannot get items; schema required'));
 
-    return fs.readFileProm(`${__dirname}/../data/toy/${schema}`)
-      .then(ids => {
-        try {
-          let data = Array.prototype.map.call(ids, (id => id.split('.', 1).toString()));
-          return resolve(data);
-        } catch(e) {
-          return reject(e);
-        }
+  return new Promise((resolve, reject) => {
+    return fs.readdirProm(`${__dirname}/../data/toy`)
+      .then(filePaths => {
+        let data = Array.prototype.map.call(filePaths, (id => id.split('.', 1).toString()));
+        return resolve(data);
       })
       .catch(reject);
   });
@@ -68,6 +63,10 @@ storage.update = function(itemId, item) {
   return new Promise((resolve, reject) => {
     if(!itemId) return reject(createError(400, 'cannot update; itemId required'));
     if(!item) return reject(createError(400, 'cannot update; item required'));
+    if(item._id !== itemId) return reject(createError(400, 'cannot update; item ids do not match'));
+    return fs.writeFileProm(`${__dirname}/../data/toy/${itemId}.json`, JSON.stringify(item))
+      .then(resolve)
+      .catch(reject);
   });
 };
 
