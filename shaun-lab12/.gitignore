@@ -87,6 +87,10 @@ typings/
 # dotenv environment variables file
 .env
 
+# Dependency directories
+data
+node_modules
+jspm_package
 
 ### OSX ###
 
