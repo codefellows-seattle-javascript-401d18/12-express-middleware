@@ -22,7 +22,7 @@
 * `.eslintignore`
 * `.gitignore`
 * `README.md`
-  * your `README.md` should include detailed instructions on how to use your API
+* your `README.md` should include detailed instructions on how to use your API
 
 #### Feature Tasks
 * create a single resource `express` API that can handle **GET**, **POST**, **PUT**, and **DELETE** requests

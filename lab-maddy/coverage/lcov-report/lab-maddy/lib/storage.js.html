@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for lab-maddy/lib/storage.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">lab-maddy/lib</a> storage.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">28.3% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>15/53</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">15% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>3/20</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">14.29% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">32.56% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>14/43</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+const debug = require('debug')('http:storage');
+const Promise = require('bluebird');
+const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
+const Toy = require('../model/toy');
+&nbsp;
+const storage = module.exports = {};
+// const memory = {};
+// const memory = {
+//   'toy': { //this is the schema, from route-toy.js
+//     '123-456-789': {_id: '123-456-789', name: 'barney', desc: 'purple dino'}
+//   },//copied the id from terminal so that he could make a GET request.
+//'kid': {
+//  'id...'
+&nbsp;
+//}
+// }
+&nbsp;
+//POST (a storage method)
+storage.create = function(schema, item) {
+  debug('#create');
+  // debugger;
+  return new Promise((resolve, reject)=&gt; {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if(!schema) <span class="cstat-no" title="statement not covered" >return reject(new Error('cannot create; schema required'));</span>
+    <span class="missing-if-branch" title="else path not taken" >E</span>if(!item.name || <span class="branch-1 cbranch-no" title="branch not covered" >!item.desc)</span> return reject(new Error('cannot create; item required'));
+&nbsp;
+    let newToy = <span class="cstat-no" title="statement not covered" >new Toy(item.name, item.desc);</span>
+&nbsp;
+    let json = <span class="cstat-no" title="statement not covered" >JSON.stringify(newToy);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return fs.writeFileProm(`${__dirname}/../data/${schema}/${newToy._id}.json`, json) //changed from item</span>
+      .then(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >resolve(newToy))</span> //take the item and hand to route (route-toy.js) and then moved to the response model.
+      .catch(console.error);//or reject
+  });
+};
+&nbsp;
+&nbsp;
+storage.fetchOne = <span class="fstat-no" title="function not covered" >fu</span>nction(schema, itemId) {
+<span class="cstat-no" title="statement not covered" >  debug('#fetchOne')</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if(!schema) <span class="cstat-no" title="statement not covered" >return reject(new Error('cannot get item; schema required'))</span></span>
+<span class="cstat-no" title="statement not covered" >    if(!itemId) <span class="cstat-no" title="statement not covered" >return reject(new Error('cannot get item; itemId required'))</span></span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return fs.readFileProm(`${__dirname}/../data/${schema}/${itemId}.json`)</span>
+    .then(<span class="fstat-no" title="function not covered" >bu</span>ff =&gt; {
+<span class="cstat-no" title="statement not covered" >      try {</span>
+        let toy = <span class="cstat-no" title="statement not covered" >JSON.parse(buff.toString())</span>
+<span class="cstat-no" title="statement not covered" >        return resolve(toy)</span>
+      } catch(e) {
+<span class="cstat-no" title="statement not covered" >        return reject(e)</span>
+      }
+    })
+    .catch(reject)
+  })
+}
+&nbsp;
+storage.fecthAll = <span class="fstat-no" title="function not covered" >fu</span>nction(schema) {
+<span class="cstat-no" title="statement not covered" >  debug('#fetchAll')</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if(!schema) <span class="cstat-no" title="statement not covered" >return reject(new Error('cannot get items; schema required'))</span></span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return fs.readdirProm(`${__dirname}/../data/${schema}`)</span>
+    .then(<span class="fstat-no" title="function not covered" >id</span>s =&gt; {
+      let data = <span class="cstat-no" title="statement not covered" >Array.prototype.map.call(ids, (<span class="fstat-no" title="function not covered" >id</span> =&gt; <span class="cstat-no" title="statement not covered" >id.split('.', 1).toString())</span>)</span>
+<span class="cstat-no" title="statement not covered" >      return resolve(data)</span>
+    })
+    .catch(reject)
+  });
+}
+&nbsp;
+&nbsp;
+storage.update = <span class="fstat-no" title="function not covered" >fu</span>nction(schema, item) {
+<span class="cstat-no" title="statement not covered" >  debug('#update')</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if(!schema) <span class="cstat-no" title="statement not covered" >return reject(new Error('cannot update; schema required'))</span></span>
+<span class="cstat-no" title="statement not covered" >    if(!item) <span class="cstat-no" title="statement not covered" >return reject(new Error('cannot update; item required'))</span></span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return fs.writeFileProm(`${__dirname}/../data/${schema}/${item._id}.json`, JSON.stringify(item))</span>
+    .then(resolve)
+    .catch(reject)
+  })
+}
+&nbsp;
+//DELETE
+storage.destroy = <span class="fstat-no" title="function not covered" >fu</span>nction(schema, itemId) {
+<span class="cstat-no" title="statement not covered" >  debug('#destroy')</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if(!schema) <span class="cstat-no" title="statement not covered" >return reject(new Error('cannot delete item; schema required'))</span></span>
+<span class="cstat-no" title="statement not covered" >    if(!itemId) <span class="cstat-no" title="statement not covered" >return reject(new Error('cannot delete item; itemId required'))</span></span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    return fs.unlinkProm(`${__dirname}/../data/${schema}/${itemId}.json`)</span>
+    .then(resolve)
+    .catch(reject)
+  });
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Sep 05 2017 17:49:27 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
