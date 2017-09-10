@@ -3,9 +3,9 @@
 
 const debug = require('debug')('http:storage');
 const createError = require('http-errors');
+const Toy = require('../model/toy');
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
-const Toy = require('./model/toy');
 
 const storage = module.exports = {};
 
@@ -51,7 +51,7 @@ storage.fetchAll = function(toys) {
   return new Promise((resolve, reject) => {
     return fs.readdirProm(`${__dirname}/../data/toy`)
       .then(filePaths => {
-        let data = Array.prototype.map.call(ids, (id => id.split('.', 1).toString()));
+        let data = Array.prototype.map.call(filePaths, (id => id.split('.', 1).toString()));
         return resolve(data);
       })
       .catch(reject);
@@ -61,12 +61,10 @@ storage.fetchAll = function(toys) {
 storage.update = function(itemId, item) {
   debug('#update');
 
-
-
   return new Promise ((resolve, reject) => {
     if(!itemId) return reject(createError(400, 'cannot create; itemId required'));
     if(!item) return reject(createError(400, 'cannot create; item required'));
-    if(item._id != itemId) return reject(createError(400, 'cannot update: item ids do not match'));
+    if(item._id !== itemId) return reject(createError(400, 'cannot update: item ids do not match'));
 
     return fs.writeFileProm(`${__dirname}/../data/toy/${item._id}.json`, JSON.stringify(item))
       .then(resolve)
@@ -75,7 +73,7 @@ storage.update = function(itemId, item) {
 };
 
 storage.destroy = function(itemId) {
-  debug('#storage delete');
+  debug('#storage destroy');
 
   return new Promise((resolve, reject) => {
     if(!itemId) return reject(createError(400, 'cannot create; item required'));

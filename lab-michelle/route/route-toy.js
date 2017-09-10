@@ -1,21 +1,22 @@
 //Note if you see copy overs, it's me copying over from my Lab 9
 'use strict';
 
-const storage = require('/./lib/storage.js');
+const storage = require('../lib/storage.js');
 const debug = require('debug')('http:route-toy');
 
 module.exports = function (router) {
 
   router.post('/api/toy', (req, res, next) => {
     debug('/api/toy POST');
-
     return storage.create(req.body)
       .then(toy => res.status(201).json(toy))
-      .catch(err => next(err));
+      .catch(err => {
+        next(err);
+      });
   });
 
   //GET ONE
-  router.get('/api/toy/:_id', (req, res) => {
+  router.get('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy/:_id GET');
 
     return storage.fetchOne(req.params._id)
@@ -29,10 +30,9 @@ module.exports = function (router) {
 
     return storage.fetchAll()
       .then(ids => res.json(ids))
-      .catch(next)
+      .catch(next);
   });
 
-  //not sure if this is right
   router.put('/api/toy', (req, res, next) => {
     debug ('/api/toy PUT');
     return storage.update(req.params._id, req.body)
