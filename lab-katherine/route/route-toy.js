@@ -27,21 +27,20 @@ module.exports = function(router) {
   router.get('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy/:_id GET')
     return storage.fetchOne(req.params._id)
-      .then(toy => res.json(toy))
+      .then(toy => res.status(200).json(toy))
       .catch(next)
   })
 
   router.get('/api/toy', (req, res, next) => {
     debug('/api/toy GET')
     return storage.fetchAll()
-      .then(data => res.json(data))
+      .then(toy => res.status.json(toy))
       .catch(next)
   })
 
   router.put('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy PUT')
-    console.log('body', req.body, 'params', req.params._id)
-    return storage.update(req.body, req.params._id)
+    return storage.update(req.body)
       .then(toy => res.status(204).json(toy))
       .catch(next)
   })
@@ -49,7 +48,7 @@ module.exports = function(router) {
   router.delete('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy DELETE')
     return storage.destroy(req.params._id)
-      .then(toy => res.status(204).text(toy))
-      .catch(err => createError(404, err.message), next)
+      .then(() => res.status(204).json('blam'))
+      .catch(err => createError(err.status, err.message), next)
   })
 }
