@@ -110,8 +110,8 @@ describe('Testing the toy routes', function () {
         describe('PUT requests', ()=> {
           describe('Valid requests', () => {
           //if we send an id
-            test.only('should create a return a new toy, given a valid request', done => {
-              superagent.put(':3000/api/toy')
+            test('should create a return a new toy, given a valid request', done => {
+              superagent.put(':3000/api/toy/:_id')
                 .type('application/json')
                 .send({
                   name: 'bob',
@@ -119,45 +119,50 @@ describe('Testing the toy routes', function () {
                 })
                 .then(res => {
                   this.res = res;
-                  expect(this.res.status).toBe(204);
-                  done();
-                });
+                  expect(this.res.body.name).toBe(204);
+            })
+            done();
             });
-            describe('Invalid requests', () => {
-              test('should return a 500 error', done => {
-                superagent.put(':3000/api/toy')
-                  .type('application/json')
-                  .send({});
-                expect(err.status).toBeFalsy();
-                done();
+        });
+        describe('Invalid requests', () => {
+          test('should return a 500 error', done => {
+            superagent.put(':3000/api/toy')
+              .type('application/json')
+              .send({})
+              .then(res => {
+                expect(res.status).ToBe(204);
+              })
+              .catch(err => {
+                expect(err.status).ToBe(400);
+              })
+              done();
               });
-            });
           });
         });
-        //DELETE requests
-        describe('Delete requests', () => {
-          describe('Valid requests', () => {
-            beforeAll (done => {
-              superagent.delete(`:3000/api/toy/${this.mockToy._id}`)
-                .then (res => {
-                  this.resDelete = res;
-                  done();
-                });
+      });
+    });
+    //DELETE requests
+    describe('Delete requests', () => {
+      describe('Valid requests', () => {
+        beforeAll (done => {
+          superagent.delete(`:3000/api/toy/${this.mockToy._id}`)
+            .then (res => {
+              this.resDelete = res;
+              done();
             });
-            test('should return a 204 No Content', () => {
-              expect(this.resDelete.status).toBe(204);
+        });
+        test('should return a 204 No Content', () => {
+          expect(this.resDelete.status).toBe(204);
+        });
+      });
+      describe('Invalid requests', ()=> {
+        test('should return 404', done => {
+          superagent.delete(':3000/api/toy')
+            .query({_id: 'tabgobargblawrjg'})
+            .catch(res => {
+              expect(res.status).toBe(404);
+              done();
             });
-          });
-          describe('Invalid requests', ()=> {
-            test('should return 404', done => {
-              superagent.delete(':3000/api/toy')
-                .query({_id: 'tabgobargblawrjg'})
-                .catch(res => {
-                  expect(res.status).toBe(404);
-                  done();
-                });
-            });
-          });
         });
       });
     });

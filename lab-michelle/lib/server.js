@@ -17,7 +17,7 @@ require('../route/route-toy')(router);
 //we will add kid here later
 
 //mount middleware
-app.use(bodyParser)
+app.use(bodyParser);
 app.use(cors);
 app.use(router);
 app.use(errorMiddleware);

@@ -33,7 +33,7 @@ module.exports = function (router) {
       .catch(next);
   });
 
-  router.put('/api/toy', (req, res, next) => {
+  router.put('/api/toy/_:id', (req, res, next) => {
     debug ('/api/toy PUT');
     return storage.update(req.params._id, req.body)
       .then(() => res.sendStatus(204))
