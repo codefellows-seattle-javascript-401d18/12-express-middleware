@@ -12,7 +12,6 @@ storage.create = function(item) {
   debug('#create')
 
   return new Promise((resolve, reject) => {
-    // if(!schema) return reject(new Error('cannot create; schema required'))
     if(!item.name) return reject(createError(400, 'cannot create; name required'))
     if(!item.desc) return reject(createError(400, 'cannot create; desc required'))
 
@@ -28,7 +27,6 @@ storage.fetchOne = function(itemId) {
   debug('#fetchOne')
 
   return new Promise((resolve, reject) => {
-    // if(!schema) return reject(new Error('cannot get item; schema required'))
     if(!itemId) return reject(createError(400, 'cannot get item; itemId required'))
 
     return fs.readFileProm(`${__dirname}/../data/toy/${itemId}.json`)
@@ -48,8 +46,6 @@ storage.fetchAll = function() {
   debug('#fetchAll')
 
   return new Promise((resolve, reject) => {
-    // if(!schema) return reject(new Error('cannot get items; schema required'))
-
     return fs.readdirProm(`${__dirname}/../data/toy`)
       .then(ids => {
         let data = Array.prototype.map.call(ids, (id => id.split('.', 1).toString()))
@@ -59,11 +55,14 @@ storage.fetchAll = function() {
   })
 }
 
-storage.update = function(item, itemId) {
+storage.update = function(itemId, item) {
   debug('#update')
 
   return new Promise((resolve, reject) => {
+    if(!itemId) return reject(createError(400, 'cannot update; itemId required'))
     if(!item) return reject(new Error('cannot update; item required'))
+    if(item._id !== itemId) return reject(createError(400, 'cannot update; item ids do not match'))
+
 
     return fs.writeFileProm(`${__dirname}/../data/toy/${itemId}.json`, JSON.stringify(item))
       .then(resolve)
