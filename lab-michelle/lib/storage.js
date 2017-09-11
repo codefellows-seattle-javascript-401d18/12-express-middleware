@@ -3,23 +3,26 @@
 
 const debug = require('debug')('http:storage');
 const createError = require('http-errors');
+const Toy = require('../model/toy');
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'), {suffix: 'Prom'});
-const Toy = require('../model/toy')
 
-//why is it complaining about storage - we're IN storage?
+const storage = module.exports = {};
+
 storage.create = function(item) {
   debug('#create');
 
   return new Promise((resolve, reject) => {
-    if(!item.name) return reject(createError(400, 'cannot create; item name required'));
-    if(!item.desc) return reject(createError(400, 'cannot create; item desc required'));
+    if(!item.name || typeof item.name !== 'string')
+      return reject(createError(400, 'cannot create; item name required'));
+    if(!item.desc || typeof item.name !== 'string')
+      return reject(createError(400, 'cannot create; item desc required'));
 
     let toy = new Toy(item.name, item.desc);
 
-    return fs.writeFileProm(`${__dirname}/../data/toy//${toy._id}.json`, JSON.stringify(toy))
+    return fs.writeFileProm(`${__dirname}/../data/toy/${toy._id}.json`, JSON.stringify(toy))
       .then(() => resolve(toy))
-      .catch(reject);
+      .catch(err => reject(err));
   });
 };
 
@@ -45,34 +48,38 @@ storage.fetchOne = function(itemId) {
 storage.fetchAll = function(toys) {
   debug('#fetchAll');
 
-  if(!toys) return reject (createError(400, 'cannot get items: created items required'));
-
-  return fs.readdirProm(`${__dirname}/../data/toy`)
-    .then(ids => {
-      let data = Array.prototype.map.call(ids, (id => id.split('.', 1).toString()));//not sure what should go here - it's got to grab all the toys in the toy folder so grab by id like suggested in the code??
-      return resolve(data);
-    })
-    .catch(reject);
+  return new Promise((resolve, reject) => {
+    return fs.readdirProm(`${__dirname}/../data/toy`)
+      .then(filePaths => {
+        let data = Array.prototype.map.call(filePaths, (id => id.split('.', 1).toString()));
+        return resolve(data);
+      })
+      .catch(reject);
+  });
 };
 
-storage.update = function(schema, item) {
+storage.update = function(itemId, item) {
   debug('#update');
 
-  if(!schema) return reject(createError(400, 'cannot create; schema required'));
-  if(!item) return reject(createError(400, 'cannot create; item required'));
+  return new Promise ((resolve, reject) => {
+    if(!itemId) return reject(createError(400, 'cannot create; itemId required'));
+    if(!item) return reject(createError(400, 'cannot create; item required'));
+    if(item._id !== itemId) return reject(createError(400, 'cannot update: item ids do not match'));
 
-  return fs.writeFileProm(`${__dirname}/../data/toy/${item._id}.json`, JSON.stringify(item))
-    .then(resolve)
-    .catch(reject);
+    return fs.writeFileProm(`${__dirname}/../data/toy/${item._id}.json`, JSON.stringify(item))
+      .then(resolve)
+      .catch(reject);
+  });
 };
 
-storage.destroy = function(schema, itemId) {
-  debug('#storage delete');
-  if(!schema) return reject(createError(400, 'cannot create; schema required'));
-  if(!item) return reject(createError(400, 'cannot create; item required'));
+storage.destroy = function(itemId) {
+  debug('#storage destroy');
 
-  return fs.unlinkProm(`${__dirname}/../data/${schema}/${itemId}.json`)
-    .then(resolve)
-    .catch(reject);
+  return new Promise((resolve, reject) => {
+    if(!itemId) return reject(createError(400, 'cannot create; item required'));
 
+    return fs.unlinkProm(`${__dirname}/../data/toy/${itemId}.json`)
+      .then(resolve)
+      .catch(reject);
+  });
 };

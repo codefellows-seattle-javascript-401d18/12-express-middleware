@@ -1,50 +1,50 @@
 //Note if you see copy overs, it's me copying over from my Lab 9
 'use strict';
 
-const storage = require('../lib/storage');
+const storage = require('../lib/storage.js');
 const debug = require('debug')('http:route-toy');
 
 module.exports = function (router) {
 
   router.post('/api/toy', (req, res, next) => {
     debug('/api/toy POST');
-
     return storage.create(req.body)
       .then(toy => res.status(201).json(toy))
-      .catch(err => next(err));
+      .catch(err => {
+        next(err);
+      });
   });
 
-  router.get('/api/toy', (req, res) => {
+  //GET ONE
+  router.get('/api/toy/:_id', (req, res, next) => {
+    debug('/api/toy/:_id GET');
+
+    return storage.fetchOne(req.params._id)
+      .then(toy => res.json(toy))
+      .catch(next);
+  });
+
+  //GET ALL
+  router.get('/api/toy', (req, res, next) => {
     debug('/api/toy GET');
 
-    if (req.params.id) {
-      storage.fetchOne('toy', req.params.id)
-        .then(toy => res.status(201).json(toy))
-        .catch(err => next(err));
-    }
+    return storage.fetchAll()
+      .then(ids => res.json(ids))
+      .catch(next);
   });
 
-  //not sure if this is right
-  router.put('/api/toy', (req, res) => {
+  router.put('/api/toy/_:id', (req, res, next) => {
     debug ('/api/toy PUT');
-    if (!req.params._id) {
-      let newToy = new Toy(req.params.name, req.params.desc)
-        .then(storage.create('toy', newToy))
-        .then(newToy => res.status (400).json(newToy))
-        .catch(err => next(err));
-    }
-    return storage.update('toy', req.body)
-      .then(newToy => res.status(400).json(newToy))
-      .catch(err => response(res, 400, err.message));
+    return storage.update(req.params._id, req.body)
+      .then(() => res.sendStatus(204))
+      .catch(next);
   });
 
-  router.delete('/api/toy', (req, res) => {
+  router.delete('/api/toy/:_id', (req, res, next) => {
     debug('/api/data DELETE');
 
-    if(req.params._id) {
-      return storage.destroy('toy', req.params._id)
-        .then(toy => res.status(400).json(toy))
-        .catch(err => response(res, 400, err.message))
-    }
+    return storage.destroy(req.params._id)
+      .then(() => res.sendStatus(204))
+      .catch(next);
   });
 };
