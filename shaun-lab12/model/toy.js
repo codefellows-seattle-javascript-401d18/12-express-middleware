@@ -1,12 +1,11 @@
 'use strict';
 
+// const debug = require('debug')('http:model-toy');
+const mongoose = require('mongoose');
 
-const debug = require('debug')('http:model-toy');
-const uuid = require('uuid/v4');
+const Toy = mongoose.Schema({
+  name: {type: String, required: true},
+  desc: {type: String, required: true},
+}, {timestamps: true});
 
-module.exports = function(name, desc) {
-  debug(`model-toy: ${name} created`);
-  this.name = name;
-  this.desc = desc;
-  this._id = uuid();
-};
+module.exports = mongoose.model('toy', Toy);
