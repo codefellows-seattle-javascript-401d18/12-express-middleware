@@ -73,8 +73,8 @@ describe('Testing toy routes', function() {
     describe('GET requests', () => {
       test('should get the record from the toy dir', done => {
 
-        superagent.get(':3000/api/toy')
-          .query({_id: this.mockToy._id})
+        superagent.get(`:3000/api/toy/${this.mockToy._id}`)
+          .type('application/json')
           .then(res => {
             this.resGet = res.body;
             this.resGet.status = res.status;
@@ -107,28 +107,58 @@ describe('Testing toy routes', function() {
     });
 
 
-
-    describe('PUT requests', () => {
-      test('should have ...', done => {
-        done();
+    describe('PUT requests', ()=> {
+      describe('Valid requests', () => {
+        //if we send an id
+        test('should create a return a new toy, given a valid request', done => {
+          superagent.put(':3000/api/toy/:_id')
+            .type('application/json')
+            .send({
+              name: 'bob',
+              desc: 'stuffed turtle',
+            })
+            .then(res => {
+              this.res = res;
+              expect(this.res.body.name).toBe(204);
+            });
+          done();
+        });
+      });
+      describe('Invalid requests', () => {
+        test('should return a 500 error', done => {
+          superagent.put(':3000/api/toy')
+            .type('application/json')
+            .send({})
+            .then(res => {
+              expect(res.status).ToBe(204);
+            })
+            .catch(err => {
+              expect(err.status).ToBe(400);
+            });
+          done();
+        });
       });
     });
-    describe('DELETE requests', () => {
-      describe('Valid Requests', () => {
-        beforeAll(done => {
+
+    describe('Delete requests', () => {
+      describe('Valid requests', () => {
+        beforeAll (done => {
           superagent.delete(`:3000/api/toy/${this.mockToy._id}`)
-            .then(res => {
+            .then (res => {
               this.resDelete = res;
               done();
             });
         });
-        test('should remove the record from the toy dir', done => {
-          fs.readdirProm(`${__dirname}/../../data/toy`)
-            .then(files => {
-              console.log(files);
-              let expectedFalse = files.includes(`${this.mockToy._id}.json`);
-              expect(expectedFalse).toBeFalsy();
-              console.log(expectedFalse);
+        test('should return a 204 No Content', () => {
+          expect(this.res.status).toBe(204);
+        });
+      });
+      describe('Invalid requests', ()=> {
+        test('should return 404', done => {
+          superagent.delete(':3000/api/toy')
+            .query({_id: 'tabgobargblawrjg'})
+            .catch(res => {
+              expect(res.status).toBe(404);
               done();
             });
         });

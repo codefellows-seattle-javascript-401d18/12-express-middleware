@@ -8,7 +8,8 @@ module.exports = function(router) {
 
     return storage.create(req.body)
       .then(toy => res.status(201).json(toy))
-      .catch(err => next(err));
+      .catch(err => { next(err);
+      });
   });
 
   router.get('/api/toy/:_id', (req, res, next) => {
@@ -22,7 +23,7 @@ module.exports = function(router) {
   router.get('/api/toy', (req, res, next) => {
     debug('/api/toy GET');
 
-    return storage.fetchAll(req.body)
+    return storage.fetchAll()
       .then(data => res.json(data))
       .catch(next);
   });
