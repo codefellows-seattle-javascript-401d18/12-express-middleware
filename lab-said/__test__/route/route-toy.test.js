@@ -111,17 +111,17 @@ describe('Testing toy routes', function() {
       describe('Valid requests', () => {
         //if we send an id
         test('should create a return a new toy, given a valid request', done => {
-          superagent.put(':3000/api/toy/:_id')
-            .type('application/json')
+          superagent.put(`:3000/api/toy/${this.mockToy._id}`)
+            // .type('application/json')
             .send({
               name: 'bob',
               desc: 'stuffed turtle',
             })
             .then(res => {
               this.res = res;
-              expect(this.res.body.name).toBe(204);
+              expect(this.res.status).toBe(204);
+              done();
             });
-          done();
         });
       });
       describe('Invalid requests', () => {
@@ -130,12 +130,12 @@ describe('Testing toy routes', function() {
             .type('application/json')
             .send({})
             .then(res => {
-              expect(res.status).ToBe(204);
+              expect(res.status).toBe(204);
             })
             .catch(err => {
-              expect(err.status).ToBe(400);
+              expect(err.status).toBe(404);
+              done();
             });
-          done();
         });
       });
     });
@@ -144,13 +144,16 @@ describe('Testing toy routes', function() {
       describe('Valid requests', () => {
         beforeAll (done => {
           superagent.delete(`:3000/api/toy/${this.mockToy._id}`)
-            .then (res => {
+            .then(res => {
+              console.log(res);
               this.resDelete = res;
+              //  console.log(this.resDelete);
               done();
             });
         });
-        test('should return a 204 No Content', () => {
-          expect(this.res.status).toBe(204);
+        test('should return a 204 No Content', done => {
+          expect(this.resDelete.status).toBe(204);
+          done();
         });
       });
       describe('Invalid requests', ()=> {

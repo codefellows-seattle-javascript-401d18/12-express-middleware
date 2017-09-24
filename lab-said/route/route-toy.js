@@ -30,6 +30,7 @@ module.exports = function(router) {
 
   router.put('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy PUT');
+
     return storage.update(req.params._id, req.body)
       .then(() => res.sendStatus(204))
       .catch(next);
