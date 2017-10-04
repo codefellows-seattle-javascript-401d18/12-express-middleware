@@ -8,7 +8,8 @@ module.exports = function(router) {
 
     return storage.create(req.body)
       .then(toy => res.status(201).json(toy))
-      .catch(err => next(err));
+      .catch(err => { next(err);
+      });
   });
 
   router.get('/api/toy/:_id', (req, res, next) => {
@@ -22,7 +23,7 @@ module.exports = function(router) {
   router.get('/api/toy', (req, res, next) => {
     debug('/api/toy GET');
 
-    return storage.fetchAll(req.body)
+    return storage.fetchAll()
       .then(data => res.json(data))
       .catch(next);
   });
@@ -30,11 +31,15 @@ module.exports = function(router) {
   router.put('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy PUT');
 
-
+    return storage.update(req.params._id, req.body)
+      .then(() => res.sendStatus(204))
+      .catch(next);
   });
 
   router.delete('/api/toy/:_id', (req, res, next) => {
     debug('/api/toy DELETE');
-
+    return storage.destroy(res.params._id)
+      .then(() => res.sendStatus(204))
+      .catch(next);
   });
 };
