@@ -1,25 +1,20 @@
 'use strict';
 
-const debug = require('debug')('http:server');
-
-// setting up express
-const PORT = process.env.PORT || 3000;
 const express = require('express');
 const router = express.Router();
 const app = module.exports = express();
 
-// setting up middleware
 const bodyParser = require('body-parser').json();
-const cors = require('./cors-middleware');
-const errorMiddleWare = require('./error-middleware');
+const cors = require('./cors');
+const errorMiddleware = require('../lib/error-middleware');
 
-// routes
 require('../route/route-toy')(router);
 
-// mount middleware
 app.use(bodyParser);
 app.use(cors);
 app.use(router);
+app.use(errorMiddleware);
 
-// always last to catch errors
-app.use(errorMiddleWare);
+module.exports = app;
+
+app.all('/*', (req, res) => res.sendStatus(404));
